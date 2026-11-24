@@ -32,6 +32,12 @@ public class SportController {
     public Sport createSport(@RequestBody Sport sport) {
         return sportService.createSport(sport);
     }
+    @PutMapping("/{id}")
+public Sport updateSport(
+        @PathVariable Long id,
+        @RequestBody Sport sport) {
+    return sportService.updateSport(id, sport);
+}
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

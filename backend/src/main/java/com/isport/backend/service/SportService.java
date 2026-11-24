@@ -27,6 +27,14 @@ public class SportService {
     public Sport createSport(Sport sport) {
         return sportRepository.save(sport);
     }
+    public Sport updateSport(Long id, Sport updatedSport) {
+        Sport existingSport = sportRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Sport not found"));
+
+        existingSport.setName(updatedSport.getName());
+
+        return sportRepository.save(existingSport);
+    }
 
     public void deleteSport(Long id) {
         sportRepository.deleteById(id);
