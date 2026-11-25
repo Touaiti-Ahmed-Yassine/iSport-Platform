@@ -1,4 +1,4 @@
-package com.isport.backend.dto;
+package com.isport.backend.dto.event;
 
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;

@@ -1,7 +1,7 @@
 package com.isport.backend.controller;
 
-import com.isport.backend.dto.EventResponse;
-import com.isport.backend.dto.EventUpdateRequest;
+import com.isport.backend.dto.event.EventResponse;
+import com.isport.backend.dto.event.EventUpdateRequest;
 import com.isport.backend.entity.Event;
 import com.isport.backend.service.EventService;
 import jakarta.validation.Valid;

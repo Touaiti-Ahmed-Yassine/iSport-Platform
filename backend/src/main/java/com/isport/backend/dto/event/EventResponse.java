@@ -1,4 +1,4 @@
-package com.isport.backend.dto;
+package com.isport.backend.dto.event;
 
 import com.isport.backend.entity.Event;
 import com.isport.backend.entity.EventStatus;

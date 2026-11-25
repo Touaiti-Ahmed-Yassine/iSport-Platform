@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import EventManagement from './components/EventManagement';
+import EventManagement from './components/events/EventManagement';
 
 const SPORTS_API_URL = 'http://localhost:8080/api/sports';
 

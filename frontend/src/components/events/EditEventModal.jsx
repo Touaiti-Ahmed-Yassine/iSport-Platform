@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { updateEvent, cancelEvent, deleteEvent } from '../services/eventService';
+import { updateEvent, cancelEvent, deleteEvent } from '../../services/eventService';
 
 export default function EditEventModal({
   event,

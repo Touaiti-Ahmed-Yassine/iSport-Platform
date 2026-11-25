@@ -1,6 +1,6 @@
 package com.isport.backend.service;
 
-import com.isport.backend.dto.EventUpdateRequest;
+import com.isport.backend.dto.event.EventUpdateRequest;
 import com.isport.backend.entity.Event;
 import com.isport.backend.entity.EventStatus;
 import com.isport.backend.entity.Sport;
