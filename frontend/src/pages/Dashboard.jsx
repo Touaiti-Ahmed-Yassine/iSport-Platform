@@ -270,7 +270,11 @@ function Dashboard() {
                       {matchOfDay.maxParticipants} joueurs max
                     </span>
                   </div>
-                  <h3 className="db-card-title">{matchOfDay.titre}</h3>
+                  <h3 className="db-card-title">
+                    <Link to={`/events/${matchOfDay.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      {matchOfDay.titre}
+                    </Link>
+                  </h3>
                   <span className="db-meta">
                     <Icon name="pin" />
                     {matchOfDay.lieu}
@@ -334,7 +338,9 @@ function Dashboard() {
 
                       <div className="db-info">
                         <div className="db-item-title">
-                          <strong>{event.titre}</strong>
+                          <Link to={`/events/${event.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <strong>{event.titre}</strong>
+                          </Link>
                           {badge && (
                             <span className={`db-status db-status-${badge.tone}`}>
                               {badge.label}
@@ -361,6 +367,9 @@ function Dashboard() {
                             ? ` · ${formatDuration(event.dureeMinutes)}`
                             : ''}
                         </span>
+                        <Link to={`/events/${event.id}`} style={{ fontSize: '13px', color: '#006680', fontWeight: 600, textDecoration: 'none', marginTop: '4px' }}>
+                          Voir détails →
+                        </Link>
                       </div>
                     </li>
                   )

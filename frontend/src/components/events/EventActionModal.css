@@ -1,0 +1,116 @@
+.action-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeInModal 0.2s ease;
+}
+
+.action-modal-card {
+  width: min(440px, 100%);
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 28px 24px 24px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  border: 1px solid #e2e8f0;
+}
+
+.action-modal-icon-badge {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-modal-icon-badge.warning {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.action-modal-icon-badge.danger {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.action-modal-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 10px 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+.action-modal-desc {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #64748b;
+  margin: 0 0 24px 0;
+}
+
+.action-modal-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.action-modal-btn {
+  flex: 1;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.action-modal-btn.cancel {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.action-modal-btn.cancel:hover {
+  background: #e2e8f0;
+}
+
+.action-modal-btn.confirm.warning {
+  background: #d97706;
+  color: #ffffff;
+}
+
+.action-modal-btn.confirm.warning:hover {
+  background: #b45309;
+}
+
+.action-modal-btn.confirm.danger {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.action-modal-btn.confirm.danger:hover {
+  background: #b91c1c;
+}
+
+.action-modal-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

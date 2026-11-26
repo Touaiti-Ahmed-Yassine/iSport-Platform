@@ -12,6 +12,8 @@ import Footer from './components/Footer'
 
 import Dashboard from './pages/Dashboard'
 import CreateEvent from './pages/CreateEvent'
+import EventDetails from './pages/EventDetails'
+import EditEvent from './pages/EditEvent'
 import SearchMatches from './pages/SearchMatches'
 import Sports from './pages/Sports'
 
@@ -111,6 +113,14 @@ function App() {
             <Route
               path="/creer-match"
               element={<CreateEvent />}
+            />
+            <Route
+              path="/events/:id"
+              element={<EventDetails />}
+            />
+            <Route
+              path="/events/:id/modifier"
+              element={<EditEvent />}
             />
             <Route
               path="/rechercher"
