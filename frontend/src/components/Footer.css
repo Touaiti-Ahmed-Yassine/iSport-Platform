@@ -1,0 +1,38 @@
+.footer {
+  border-top: 1px solid #e4e7f5;
+  background: #f1f1fc;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  width: min(1200px, 94%);
+  margin: 0 auto;
+  padding: 22px 0;
+  color: #5d6b82;
+  font-size: 14px;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.footer-left img {
+  display: block;
+  height: 30px;
+  width: auto;
+}
+
+.footer-links {
+  display: flex;
+  gap: 22px;
+}
+
+.footer-links span {
+  color: #131a2e;
+}

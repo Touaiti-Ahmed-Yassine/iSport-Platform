@@ -1,0 +1,36 @@
+:root {
+  --bg: #f6f6ff;
+  --ink: #131a2e;
+  --muted: #5d6b82;
+  --teal: #006680;
+  --blue: #2a58c8;
+  --cyan: #00a3cc;
+  --cyan-soft: #c8eefb;
+  --lime: #a6f23a;
+  --lime-soft: #e1fbb4;
+  --lime-ink: #3a5a00;
+  --lav: #eceefe;
+  --line: #e4e7f5;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Hanken Grotesk', Inter, Arial, sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Outfit', 'Hanken Grotesk', Arial, sans-serif;
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-shell .app-main {
+  flex: 1;
+}
