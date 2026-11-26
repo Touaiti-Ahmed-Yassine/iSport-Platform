@@ -1,188 +1,155 @@
-
-import { useEffect, useState } from 'react'
-import './App.css'
-
-const API_URL = 'http://localhost:8080/api/sports'
+import React, { useState } from 'react';
+import './App.css';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 function App() {
-  const [sports, setSports] = useState([])
-  const [name, setName] = useState('')
-  const [editingId, setEditingId] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const [currentView, setCurrentView] = useState('login'); // 'login' | 'register'
+  const [currentUser, setCurrentUser] = useState(null);
 
-  async function fetchSports() {
-    try {
-      setError('')
-      const response = await fetch(API_URL)
+  const handleLoginSuccess = (user) => {
+    setCurrentUser(user);
+  };
 
-      if (!response.ok) {
-        throw new Error('Unable to load sports')
-      }
-
-      const data = await response.json()
-      setSports(data)
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-useEffect(() => {
-  let ignore = false
-
-  async function loadSports() {
-    try {
-      const response = await fetch(API_URL)
-
-      if (!response.ok) {
-        throw new Error('Unable to load sports')
-      }
-
-      const data = await response.json()
-
-      if (!ignore) {
-        setSports(data)
-        setError('')
-      }
-    } catch (err) {
-      if (!ignore) {
-        setError(err.message)
-      }
-    } finally {
-      if (!ignore) {
-        setLoading(false)
-      }
-    }
-  }
-
-  loadSports()
-
-  return () => {
-    ignore = true
-  }
-}, [])
-
-  async function handleSubmit(event) {
-    event.preventDefault()
-
-    if (!name.trim()) return
-
-    try {
-      const url = editingId
-        ? `${API_URL}/${editingId}`
-        : API_URL
-
-      const response = await fetch(url, {
-        method: editingId ? 'PUT' : 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name: name.trim() }),
-      })
-
-      if (!response.ok) {
-        throw new Error('Unable to save sport')
-      }
-
-      setName('')
-      setEditingId(null)
-      await fetchSports()
-    } catch (err) {
-      setError(err.message)
-    }
-  }
-
-  function handleEdit(sport) {
-    setName(sport.name)
-    setEditingId(sport.id)
-  }
-
-  async function handleDelete(id) {
-    try {
-      const response = await fetch(`${API_URL}/${id}`, {
-        method: 'DELETE',
-      })
-
-      if (!response.ok) {
-        throw new Error('Unable to delete sport')
-      }
-
-      await fetchSports()
-    } catch (err) {
-      setError(err.message)
-    }
-  }
-
-  function handleCancel() {
-    setName('')
-    setEditingId(null)
-  }
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setCurrentView('login');
+  };
 
   return (
-    <main className="container">
-      <header className="header">
-        <h1>iSport</h1>
-        <p>Sports Management Platform</p>
+    <div className="isport-page">
+      {/* Top Navbar */}
+      <header className="isport-header">
+        <div className="header-left">
+          <div className="brand-logo">
+            <span className="logo-runner">🏃‍♂️</span>
+            <div className="logo-text-group">
+              <span className="brand-name">iSport</span>
+              <span className="brand-slogan">Connect. Play. Discover.</span>
+            </div>
+          </div>
+          <nav className="header-nav">
+            <a href="#accueil" className="nav-item active">Accueil</a>
+            <a href="#recherche" className="nav-item">Rechercher des matchs</a>
+            <a href="#pourquoi" className="nav-item">Pourquoi iSport</a>
+          </nav>
+        </div>
+
+        <div className="header-right">
+          <span className="search-icon-nav">🔍</span>
+          {currentUser ? (
+            <div className="user-profile-badge">
+              <span className="user-avatar">👤</span>
+              <span className="user-name">{currentUser.login}</span>
+              <button type="button" className="btn-logout" onClick={handleLogout}>
+                Déconnexion
+              </button>
+            </div>
+          ) : (
+            <div className="header-auth-actions">
+              <button
+                type="button"
+                className={`btn-nav-text ${currentView === 'login' ? 'active' : ''}`}
+                onClick={() => setCurrentView('login')}
+              >
+                Connexion
+              </button>
+              <button
+                type="button"
+                className="btn-nav-primary"
+                onClick={() => setCurrentView('register')}
+              >
+                S'inscrire ➔
+              </button>
+            </div>
+          )}
+        </div>
       </header>
 
-      <section className="panel">
-        <h2>{editingId ? 'Edit Sport' : 'Add a Sport'}</h2>
+      {/* Main Container */}
+      <main className="isport-main">
+        {/* Central Logo & Intro Headline */}
+        <section className="intro-section">
+          <div className="hero-logo-box">
+            <span className="hero-logo-icon">🏃‍♂️</span>
+            <span className="hero-logo-title">iSport</span>
+          </div>
+          <p className="intro-subtitle">
+            Rejoignez des milliers de sportifs locaux pour du basketball, football, volleyball et ultimate frisbee.
+          </p>
+        </section>
 
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Enter sport name"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-          />
-
-          <button type="submit">
-            {editingId ? 'Update Sport' : 'Add Sport'}
-          </button>
-
-          {editingId && (
-            <button type="button" onClick={handleCancel}>
-              Cancel
-            </button>
-          )}
-        </form>
-      </section>
-
-      <section className="panel">
-        <h2>Available Sports</h2>
-
-        {loading && <p>Loading sports...</p>}
-        {error && <p className="error">{error}</p>}
-
-        {!loading && sports.length === 0 && (
-          <p>No sports available yet.</p>
-        )}
-
-        <div className="sports-list">
-          {sports.map((sport) => (
-            <article className="sport-item" key={sport.id}>
-              <span>{sport.name}</span>
-
-              <div className="actions">
-                <button onClick={() => handleEdit(sport)}>
-                  Edit
-                </button>
-
-                <button
-                  className="delete-button"
-                  onClick={() => handleDelete(sport.id)}
-                >
-                  Delete
+        {/* Auth Box (Login or Register) */}
+        <section className="auth-section">
+          {currentUser ? (
+            <div className="logged-in-card">
+              <h2>🎉 Vous êtes connecté avec succès !</h2>
+              <p>
+                Bienvenue <strong>{currentUser.login}</strong> ({currentUser.email})
+              </p>
+              <div className="logged-actions">
+                <button type="button" className="btn-auth-submit" onClick={handleLogout}>
+                  Se déconnecter
                 </button>
               </div>
-            </article>
-          ))}
+            </div>
+          ) : currentView === 'login' ? (
+            <Login
+              onSwitchToRegister={() => setCurrentView('register')}
+              onLoginSuccess={handleLoginSuccess}
+            />
+          ) : (
+            <Register
+              onSwitchToLogin={() => setCurrentView('login')}
+              onRegisterSuccess={(user) => {
+                setCurrentUser(user);
+              }}
+            />
+          )}
+        </section>
+
+        {/* Feature Highlights Grid */}
+        <section className="features-grid">
+          <div className="feature-card">
+            <div className="feature-icon-badge blue">📍</div>
+            <div className="feature-content">
+              <h4>Terrains Ouverts</h4>
+              <p>Consultez instantanément les gymnases et parcs municipaux praticables.</p>
+            </div>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon-badge green">👥</div>
+            <div className="feature-content">
+              <h4>Remplissage en direct</h4>
+              <p>Indicateurs temps réel : sachez s'il manque 1 gardien ou 2 ailiers pour jouer.</p>
+            </div>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon-badge indigo">🛡️</div>
+            <div className="feature-content">
+              <h4>100% Gratuit</h4>
+              <p>Conçu par des passionnés pour dynamiser le sport amateur de proximité.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="isport-footer">
+        <div className="footer-left">
+          <span className="footer-logo">🏃‍♂️ iSport</span>
+          <span>&copy; 2026 iSport Platform. Tous droits réservés.</span>
         </div>
-      </section>
-    </main>
-  )
+        <div className="footer-links">
+          <a href="#regles">Règles de jeu</a>
+          <a href="#partenaires">Terrains partenaires</a>
+          <a href="#support">Support</a>
+        </div>
+      </footer>
+    </div>
+  );
 }
 
-export default App
+export default App;
