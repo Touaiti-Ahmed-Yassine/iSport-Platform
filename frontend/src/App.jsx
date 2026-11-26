@@ -1,10 +1,13 @@
 
 import { useEffect, useState } from 'react'
 import './App.css'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import { logout, getCurrentUser } from './services/authService'
 
 const API_URL = 'http://localhost:8080/api/sports'
 
-function App() {
+function SportsScreen({ user, onLogout }) {
   const [sports, setSports] = useState([])
   const [name, setName] = useState('')
   const [editingId, setEditingId] = useState(null)
@@ -125,6 +128,10 @@ useEffect(() => {
       <header className="header">
         <h1>iSport</h1>
         <p>Sports Management Platform</p>
+        <p>
+          Connecté : {user.login}{' '}
+          <button type="button" onClick={onLogout}>Déconnexion</button>
+        </p>
       </header>
 
       <section className="panel">
@@ -184,5 +191,82 @@ useEffect(() => {
     </main>
   )
 }
+
+
+function App() {
+  const [view, setView] = useState('login')
+  const [user, setUser] = useState(null)
+  const [notice, setNotice] = useState('')
+  const [checkingSession, setCheckingSession] = useState(true)
+
+  useEffect(() => {
+    let active = true
+
+    async function restoreSession() {
+      try {
+        const currentUser = await getCurrentUser()
+
+        if (active) {
+          setUser(currentUser)
+        }
+      } catch (error) {
+        if (active) {
+          setNotice('Impossible de vérifier la session. Vérifiez le serveur.')
+        }
+      } finally {
+        if (active) {
+          setCheckingSession(false)
+        }
+      }
+    }
+
+    restoreSession()
+
+    return () => {
+      active = false
+    }
+  }, [])
+
+  if (checkingSession) {
+    return <p>Chargement de votre session...</p>
+  }
+
+  if (user) {
+    return (
+      <SportsScreen
+        user={user}
+        onLogout={() => {
+          logout()
+          setUser(null)
+          setView('login')
+        }}
+      />
+    )
+  }
+
+  if (view === 'register') {
+    return (
+      <Register
+        onSuccess={() => {
+          setNotice('Compte créé. Vous pouvez vous connecter.')
+          setView('login')
+        }}
+        onSwitch={() => setView('login')}
+      />
+    )
+  }
+
+  return (
+    <Login
+      notice={notice}
+      onSuccess={(loggedUser) => {
+        setNotice('')
+        setUser(loggedUser)
+      }}
+      onSwitch={() => setView('register')}
+    />
+  )
+}
+
 
 export default App
