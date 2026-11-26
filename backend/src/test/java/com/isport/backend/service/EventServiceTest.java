@@ -55,7 +55,6 @@ class EventServiceTest {
         otherUser.setId(2L);
 
         football = new Sport("Football");
-        football.setId(10L);
 
         sampleEvent = new Event();
         sampleEvent.setId(100L);
